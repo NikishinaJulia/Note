@@ -44,10 +44,5 @@ public class NotesListActivity extends AppCompatActivity {
         repository.create(new Note("Задача 8", "Описание 8 "));
         repository.create(new Note("Задача 9", "Описание 9 "));
         repository.create(new Note("Задача 10", "Описание 10 "));
-        repository.create(new Note("Задача 11", "Описание 11 "));
-        repository.create(new Note("Задача 12", "Описание 12 "));
-        repository.create(new Note("Задача 13", "Описание 13 "));
-        repository.create(new Note("Задача 14", "Описание 14 "));
-        repository.create(new Note("Задача 15", "Описание 15 "));
     }
 }
