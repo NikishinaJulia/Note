@@ -5,6 +5,20 @@ import java.util.List;
 
 public class InMemoryRepoImpl implements Repo{
 
+    private static InMemoryRepoImpl repo;
+
+    public static Repo getInstance() {
+        if (repo == null) {
+            repo = new InMemoryRepoImpl();
+        }
+        return repo;
+
+    }
+
+    private InMemoryRepoImpl() {
+
+    }
+
     private ArrayList<Note> notes = new ArrayList<>();
     private int counter = 0;
 
@@ -30,7 +44,7 @@ public class InMemoryRepoImpl implements Repo{
     @Override
     public void update(Note note) {
         for (int i = 0; i < notes.size(); i++){
-            if (notes.get(i).getId() == note.getId()) {
+            if (notes.get(i).getId().equals(note.getId())) {
                 notes.set(i, note);
                 break;
             }
