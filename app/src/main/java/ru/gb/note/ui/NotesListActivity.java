@@ -29,7 +29,9 @@ public class NotesListActivity extends AppCompatActivity implements NotesAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes_list);
 
+        if (savedInstanceState == null) {
         fillRepo();
+        }
 
         adapter = new NotesAdapter();
         adapter.setNotes(repository.getAll());
