@@ -2,12 +2,12 @@ package ru.gb.note.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,39 +18,33 @@ import ru.gb.note.data.Note;
 import ru.gb.note.data.Repo;
 import ru.gb.note.recycler.NotesAdapter;
 
-public class NotesListActivity extends AppCompatActivity implements NotesAdapter.OnNoteClickListener {
+public class MainNotesActivity extends AppCompatActivity {
 
     private Repo repository = InMemoryRepoImpl.getInstance();
-    private RecyclerView list;
-    private NotesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes_list);
-
         if (savedInstanceState == null) {
-        fillRepo();
+            fillRepo();
         }
-
-        adapter = new NotesAdapter();
-        adapter.setNotes(repository.getAll());
-
-        adapter.setOnNoteClickListener(this);
-
-        list = findViewById(R.id.list);
-        list.setLayoutManager(new LinearLayoutManager(this));
-        list.setAdapter(adapter);
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.list_fragment, new NoteListFragment());
+        fragmentTransaction.addToBackStack("");
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
     }
 
 
-    @Override
+/*    @Override
     protected void onResume() {
         super.onResume();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
-    }
+    }*/
 
     private void fillRepo() {
         repository.create(new Note("Задача 1", "Описание 1 "));
@@ -65,12 +59,7 @@ public class NotesListActivity extends AppCompatActivity implements NotesAdapter
         repository.create(new Note("Задача 10", "Описание 10 "));
     }
 
-    @Override
-    public void onNoteClick(Note note) {
-        Intent intent = new Intent(this, EditNoteActivity.class);
-        intent.putExtra(Constants.NOTE, note);
-        startActivity(intent);
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,10 +71,13 @@ public class NotesListActivity extends AppCompatActivity implements NotesAdapter
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_create:
-                Intent EditNoteIntent = new Intent(this, EditNoteActivity.class);
-                Note note = new Note("","");
-                EditNoteIntent.putExtra(Constants.NOTE, note);
-                startActivity(EditNoteIntent);
+                EditNoteFragment detail = EditNoteFragment.newInstance(new Note("",""));
+                FragmentManager fragmentManager = this.getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.list_fragment, detail);
+                fragmentTransaction.addToBackStack("");
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                fragmentTransaction.commit();
             return true;
         }
         return super.onOptionsItemSelected(item);
