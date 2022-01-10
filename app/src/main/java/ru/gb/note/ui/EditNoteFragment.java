@@ -1,6 +1,7 @@
 package ru.gb.note.ui;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +61,14 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener {
             Note note = new Note(id, title.getText().toString(), description.getText().toString());
             repository.update(note);
         }
-        requireActivity().getSupportFragmentManager().popBackStack();
+        if (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
+            ((NoteListFragment) requireActivity().getSupportFragmentManager()
+                    .findFragmentById(R.id.list_fragment))
+                    .updateList();
+        }else{
+            requireActivity().getSupportFragmentManager().popBackStack();
+        }
     }
 
     public static EditNoteFragment newInstance(Note note) {

@@ -2,6 +2,7 @@ package ru.gb.note.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,11 +56,33 @@ public class NoteListFragment extends Fragment  implements NotesAdapter.OnNoteCl
 
     @Override
     public void onNoteClick(Note note) {
+        if (getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE) {
+            onNoteClickLand(note);
+        } else {
+            onNoteClickPort(note);
+        }
+    }
 
+    public void updateList(){
+        adapter.notifyDataSetChanged();
+    }
+
+    private void onNoteClickPort(Note note) {
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.list_fragment, detail);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.addToBackStack("");
+        fragmentTransaction.commit();
+    }
+
+    private void onNoteClickLand(Note note) {
+        EditNoteFragment detail = EditNoteFragment.newInstance(note);
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.edit_fragment, detail);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.commit();
