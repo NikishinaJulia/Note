@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="sizeTitle">26sp</dimen>
+    <dimen name="sizeDescription">20sp</dimen>
+</resources>
