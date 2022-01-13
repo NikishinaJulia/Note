@@ -37,10 +37,10 @@ public class MainNotesActivity extends AppCompatActivity {
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
 
-        if (getResources().getConfiguration().orientation
+        /*if (getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE) {
             onNoteClickLand(new Note("",""));
-        }
+        }*/
     }
 
 
