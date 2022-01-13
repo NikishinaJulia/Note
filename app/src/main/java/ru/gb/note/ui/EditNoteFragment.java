@@ -66,6 +66,7 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener {
             ((NoteListFragment) requireActivity().getSupportFragmentManager()
                     .findFragmentById(R.id.list_fragment))
                     .updateList();
+            requireActivity().getSupportFragmentManager().popBackStack();
         }else{
             requireActivity().getSupportFragmentManager().popBackStack();
         }

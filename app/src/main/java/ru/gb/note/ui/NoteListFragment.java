@@ -69,6 +69,9 @@ public class NoteListFragment extends Fragment  implements NotesAdapter.OnNoteCl
     }
 
     private void onNoteClickPort(Note note) {
+        if(requireActivity().getSupportFragmentManager().getBackStackEntryCount()>1){
+            requireActivity().getSupportFragmentManager().popBackStack();
+        }
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -79,6 +82,9 @@ public class NoteListFragment extends Fragment  implements NotesAdapter.OnNoteCl
     }
 
     private void onNoteClickLand(Note note) {
+        if(requireActivity().getSupportFragmentManager().getBackStackEntryCount()>1){
+            requireActivity().getSupportFragmentManager().popBackStack();
+        }
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
