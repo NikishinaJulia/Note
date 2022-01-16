@@ -20,7 +20,8 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,6 +41,11 @@
         android:textSize="@dimen/sizeDescription"
         android:id="@+id/note_description"
         tools:text="Description"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:id="@+id/note_date" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

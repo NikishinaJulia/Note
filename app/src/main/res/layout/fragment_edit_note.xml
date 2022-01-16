@@ -27,17 +27,38 @@
         android:textSize="@dimen/sizeTitle"/>
     <LinearLayout
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/sizeImportance"
-            android:text="Важность:"/>
+            android:text="@string/importance"/>
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/importance"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sizeDate"
+            android:text="@string/date"/>
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/date_change"
+            android:textSize="@dimen/sizeImportance" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_date"
+            android:id="@+id/pick_date" />
     </LinearLayout>
     <EditText
         android:layout_width="match_parent"

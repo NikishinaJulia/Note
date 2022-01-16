@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Note</string>
+    <string name="pick_date">Выбор даты</string>
+    <string name="date">Дата:</string>
+    <string name="importance">Важность:</string>
 
     <string-array name="importance">
         <item>Не важно</item>
