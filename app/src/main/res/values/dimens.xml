@@ -3,4 +3,5 @@
 
     <dimen name="sizeTitle">26sp</dimen>
     <dimen name="sizeDescription">20sp</dimen>
+    <dimen name="sizeImportance">18sp</dimen>
 </resources>

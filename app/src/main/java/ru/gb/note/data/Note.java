@@ -7,16 +7,24 @@ public class Note implements Serializable {
     private Integer id;
     private String title;
     private String description;
+    private String importance = "Не важно";
 
     public Note(String title, String description) {
         this.title = title;
         this.description = description;
     }
 
-    public Note(Integer id, String title, String description) {
+    public Note(String title, String description,String importance) {
+        this.title = title;
+        this.description = description;
+        this.importance = importance;
+    }
+
+    public Note(Integer id, String title, String description, String importance) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.importance = importance;
     }
 
     public Integer getId() {
@@ -41,5 +49,13 @@ public class Note implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImportance() {
+        return importance;
+    }
+
+    public void setImportance(String importance) {
+        this.importance = importance;
     }
 }

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Note</string>
+
+    <string-array name="importance">
+        <item>Не важно</item>
+        <item>Важно</item>
+        <item>Срочно</item>
+    </string-array>
 </resources>
