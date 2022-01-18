@@ -18,20 +18,34 @@
         android:orientation="vertical"
         android:layout_margin="8dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/sizeTitle"
-        android:id="@+id/note_title"
-        tools:text="Title"
-        android:textColor="@color/black"/>
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sizeTitle"
+                android:id="@+id/note_title"
+                tools:text="Title"
+                android:textColor="@color/black"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/note_importance"
+                />
+        </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/sizeDescription"
         android:id="@+id/note_description"
         tools:text="Description"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:id="@+id/note_date" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

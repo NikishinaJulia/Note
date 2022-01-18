@@ -2,6 +2,7 @@ package ru.gb.note.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,17 +31,28 @@ public class MainNotesActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             fillRepo();
         }
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.list_fragment, new NoteListFragment());
-        fragmentTransaction.addToBackStack("");
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
 
-        if (getResources().getConfiguration().orientation
+
+
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = this.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.list_fragment, new NoteListFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.commit();
+            /*getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.list_fragment, new NoteListFragment())
+                    .commit();*/
+        }
+
+
+
+        /*if (getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE) {
             onNoteClickLand(new Note("",""));
-        }
+        }*/
     }
 
 
@@ -88,14 +100,28 @@ public class MainNotesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        for (Fragment fragment: getSupportFragmentManager().getFragments()) {
+            if(fragment.isVisible()){
+                FragmentManager childFragmentManager = fragment.getChildFragmentManager();
+                if(childFragmentManager.getBackStackEntryCount()>0){
+                    childFragmentManager.popBackStack();
+                }
+            }
+        }
+        super.onBackPressed();
+    }
+
     private void onNoteClickPort(Note note) {
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.list_fragment, detail);
-        fragmentTransaction.addToBackStack("");
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
+
     }
 
     private void onNoteClickLand(Note note) {
@@ -103,8 +129,9 @@ public class MainNotesActivity extends AppCompatActivity {
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.edit_fragment, detail);
-        fragmentTransaction.addToBackStack("");
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
+
     }
 }
