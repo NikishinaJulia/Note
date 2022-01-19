@@ -20,10 +20,11 @@ import ru.gb.note.R;
 import ru.gb.note.data.Constants;
 import ru.gb.note.data.InMemoryRepoImpl;
 import ru.gb.note.data.Note;
+import ru.gb.note.data.PopupMenuItemClickListener;
 import ru.gb.note.data.Repo;
 import ru.gb.note.recycler.NotesAdapter;
 
-public class NoteListFragment extends Fragment  implements NotesAdapter.OnNoteClickListener {
+public class NoteListFragment extends Fragment implements NotesAdapter.OnNoteClickListener, PopupMenuItemClickListener {
 
     private RecyclerView list;
 
@@ -39,6 +40,8 @@ public class NoteListFragment extends Fragment  implements NotesAdapter.OnNoteCl
 
         adapter = new NotesAdapter();
         adapter.setNotes(repository.getAll());
+
+        adapter.setOnPopupMenuClickListener(this);
 
         list = view.findViewById(R.id.list);
         list.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -92,5 +95,22 @@ public class NoteListFragment extends Fragment  implements NotesAdapter.OnNoteCl
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.commit();
+    }
+
+
+    @Override
+    public void click(int command, Note note, int position) {
+        switch (command){
+            case R.id.context_delete:
+                repository.delete(note.getId());
+                adapter.delete(repository.getAll(), position);
+                return;
+
+            case R.id.context_modify:
+                onNoteClick(note);
+                return;
+
+
+        }
     }
 }
