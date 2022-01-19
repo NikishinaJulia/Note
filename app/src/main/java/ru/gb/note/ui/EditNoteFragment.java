@@ -76,6 +76,7 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
             id = note.getId();
             title.setText(note.getTitle());
             description.setText(note.getDescription());
+            dateChange.setText(note.getDate());
             String[] stringArray = view.getResources().getStringArray(R.array.importance);
             for (int i = 0, stringArrayLength = stringArray.length; i < stringArrayLength; i++) {
                 String value = stringArray[i];
