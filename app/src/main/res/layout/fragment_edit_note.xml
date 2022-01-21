@@ -50,15 +50,16 @@
             android:textSize="@dimen/sizeDate"
             android:text="@string/date"/>
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/date_change"
+            android:text="@string/pick_date"
             android:textSize="@dimen/sizeImportance" />
-        <Button
+    <!--    <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pick_date"
-            android:id="@+id/pick_date" />
+            android:id="@+id/pick_date" />-->
     </LinearLayout>
     <EditText
         android:layout_width="match_parent"
