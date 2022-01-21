@@ -31,19 +31,14 @@ public class MainNotesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes_list);
 
-
-
         if (savedInstanceState == null) {
             fillRepo();
         }
-
-
 
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.list_fragment, new NoteListFragment());
-            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();
             /*getSupportFragmentManager()
@@ -119,22 +114,28 @@ public class MainNotesActivity extends AppCompatActivity {
     }
 
     private void onNoteClickPort(Note note) {
+        if(this.getSupportFragmentManager().getBackStackEntryCount()>0){
+            this.getSupportFragmentManager().popBackStack();
+        }
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.list_fragment, detail);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
 
     }
 
     private void onNoteClickLand(Note note) {
+        if(this.getSupportFragmentManager().getBackStackEntryCount()>0){
+            this.getSupportFragmentManager().popBackStack();
+        }
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.edit_fragment, detail);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
 
