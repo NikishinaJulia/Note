@@ -38,7 +38,7 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
     private EditText title;
     private EditText description;
     private TextView dateChange;
-    private Button pickDate;
+  /*  private Button pickDate;*/
     private Button saveNote;
     private Integer id = -1;
     private Spinner importance;
@@ -66,16 +66,22 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
 
         dateChange =  view.findViewById(R.id.date_change);
 
-        pickDate = view.findViewById(R.id.pick_date);
-        pickDate.setOnClickListener((View v)-> {
+      /*  pickDate = view.findViewById(R.id.pick_date);*/
+        dateChange.setOnClickListener((View v)-> {
             showDatePickerDialog(v);
         });
+/*        pickDate.setOnClickListener((View v)-> {
+            showDatePickerDialog(v);
+        });*/
         Bundle arguments = getArguments();
         if (arguments != null) {
             Note note = (Note) arguments.getSerializable(Constants.NOTE);
             id = note.getId();
             title.setText(note.getTitle());
             description.setText(note.getDescription());
+            if(note.getDate()!=null) {
+                dateChange.setText(note.getDate());
+            }
             String[] stringArray = view.getResources().getStringArray(R.array.importance);
             for (int i = 0, stringArrayLength = stringArray.length; i < stringArrayLength; i++) {
                 String value = stringArray[i];

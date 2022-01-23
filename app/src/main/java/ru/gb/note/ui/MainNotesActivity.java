@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import ru.gb.note.R;
 import ru.gb.note.data.Constants;
@@ -28,17 +30,15 @@ public class MainNotesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes_list);
+
         if (savedInstanceState == null) {
             fillRepo();
         }
-
-
 
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.list_fragment, new NoteListFragment());
-            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();
             /*getSupportFragmentManager()
@@ -114,24 +114,42 @@ public class MainNotesActivity extends AppCompatActivity {
     }
 
     private void onNoteClickPort(Note note) {
+        if(this.getSupportFragmentManager().getBackStackEntryCount()>0){
+            this.getSupportFragmentManager().popBackStack();
+        }
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.list_fragment, detail);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
 
     }
 
     private void onNoteClickLand(Note note) {
+        if(this.getSupportFragmentManager().getBackStackEntryCount()>0){
+            this.getSupportFragmentManager().popBackStack();
+        }
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.edit_fragment, detail);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
 
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        return super.onContextItemSelected(item);
+    }
+
+
 }
