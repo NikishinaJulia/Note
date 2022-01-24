@@ -1,19 +1,23 @@
 package ru.gb.note.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import ru.gb.note.R;
 import ru.gb.note.data.Constants;
@@ -102,15 +106,19 @@ public class MainNotesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        for (Fragment fragment: getSupportFragmentManager().getFragments()) {
-            if(fragment.isVisible()){
-                FragmentManager childFragmentManager = fragment.getChildFragmentManager();
-                if(childFragmentManager.getBackStackEntryCount()>0){
-                    childFragmentManager.popBackStack();
+        if(getSupportFragmentManager().getBackStackEntryCount()>0) {
+            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                if (fragment.isVisible()) {
+                    FragmentManager childFragmentManager = fragment.getChildFragmentManager();
+                    if (childFragmentManager.getBackStackEntryCount() > 0) {
+                        childFragmentManager.popBackStack();
+                    }
                 }
             }
+            super.onBackPressed();
+        }else {
+            new ExitDialogFragment().show(getSupportFragmentManager(), ExitDialogFragment.TAG);
         }
-        super.onBackPressed();
     }
 
     private void onNoteClickPort(Note note) {
