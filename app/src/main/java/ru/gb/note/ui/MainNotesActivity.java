@@ -28,6 +28,8 @@ import ru.gb.note.recycler.NotesAdapter;
 
 public class MainNotesActivity extends AppCompatActivity {
 
+    public static final String NOTE_LIST = "NOTE_LIST";
+    public static final String NOTE_VALUE = "NOTE_VALUE";
     private Repo repository = InMemoryRepoImpl.getInstance();
 
     @Override
@@ -42,21 +44,50 @@ public class MainNotesActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.list_fragment, new NoteListFragment());
+            fragmentTransaction.replace(R.id.list_fragment, new NoteListFragment(), NOTE_LIST);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();
-            /*getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.list_fragment, new NoteListFragment())
-                    .commit();*/
+        }else {
+            Fragment noteValueFragment = getSupportFragmentManager().findFragmentByTag(NOTE_VALUE);
+            Fragment noteListFragment = getSupportFragmentManager().findFragmentByTag(NOTE_LIST);
+            if (noteValueFragment != null) {
+                FragmentManager fm = this.getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction;
+
+                if (getResources().getConfiguration().orientation
+                        == Configuration.ORIENTATION_LANDSCAPE) {
+                    fm.popBackStack();
+                    fm.executePendingTransactions();
+                    fragmentTransaction = fm.beginTransaction();
+                    fragmentTransaction.replace(R.id.list_fragment, noteListFragment, NOTE_LIST);
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.commit();
+                    fragmentTransaction = fm.beginTransaction();
+                    fragmentTransaction.replace(R.id.edit_fragment,
+                            EditNoteFragment.newInstance(noteValueFragment.getArguments()),
+                            NOTE_VALUE);
+                    fragmentTransaction.addToBackStack("");
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.commit();
+                } else {
+                    fm.popBackStack();
+                    fm.executePendingTransactions();
+                    fragmentTransaction = fm.beginTransaction();
+                    fragmentTransaction.replace(R.id.list_fragment,
+                            noteListFragment,
+                            NOTE_LIST);
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.commit();
+                    fragmentTransaction = fm.beginTransaction();
+                    fragmentTransaction.replace(R.id.list_fragment,
+                            EditNoteFragment.newInstance(noteValueFragment.getArguments()),
+                            NOTE_VALUE);
+                    fragmentTransaction.addToBackStack("");
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.commit();
+                }
+            }
         }
-
-
-
-        /*if (getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE) {
-            onNoteClickLand(new Note("",""));
-        }*/
     }
 
 
@@ -128,7 +159,7 @@ public class MainNotesActivity extends AppCompatActivity {
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.list_fragment, detail);
+        fragmentTransaction.replace(R.id.list_fragment, detail, NOTE_VALUE);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
@@ -142,7 +173,7 @@ public class MainNotesActivity extends AppCompatActivity {
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.edit_fragment, detail);
+        fragmentTransaction.replace(R.id.edit_fragment, detail, NOTE_VALUE);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();

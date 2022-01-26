@@ -144,6 +144,12 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
         return fragment;
     }
 
+    public static EditNoteFragment newInstance(Bundle args) {
+        EditNoteFragment fragment = new EditNoteFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         currentValue = parent.getItemAtPosition(position);

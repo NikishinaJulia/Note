@@ -78,7 +78,7 @@ public class NoteListFragment extends Fragment implements NotesAdapter.OnNoteCli
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.list_fragment, detail);
+        fragmentTransaction.replace(R.id.list_fragment, detail, MainNotesActivity.NOTE_VALUE);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.commit();
@@ -91,7 +91,7 @@ public class NoteListFragment extends Fragment implements NotesAdapter.OnNoteCli
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.edit_fragment, detail);
+        fragmentTransaction.replace(R.id.edit_fragment, detail, MainNotesActivity.NOTE_VALUE);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.commit();
