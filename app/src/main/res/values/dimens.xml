@@ -5,4 +5,6 @@
     <dimen name="sizeDescription">20sp</dimen>
     <dimen name="sizeImportance">18sp</dimen>
     <dimen name="sizeDate">18sp</dimen>
+    <dimen name="sizeAboutText">24sp</dimen>
+    <dimen name="sizeAbout">36sp</dimen>
 </resources>

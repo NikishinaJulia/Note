@@ -3,6 +3,8 @@
     <string name="pick_date">Выбор даты</string>
     <string name="date">Дата:</string>
     <string name="importance">Важность:</string>
+    <string name="about">О приложении:</string>
+    <string name="about_text">Наше приложение самое лучшее!!! Выбирайте его!</string>
 
     <string-array name="importance">
         <item>Не важно</item>
