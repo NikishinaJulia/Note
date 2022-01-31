@@ -1,8 +1,11 @@
 package ru.gb.note.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+
 import ru.gb.note.R;
 import ru.gb.note.data.Constants;
 import ru.gb.note.data.InMemoryRepoImpl;
@@ -28,6 +33,9 @@ import ru.gb.note.recycler.NotesAdapter;
 
 public class MainNotesActivity extends AppCompatActivity {
 
+    public static final String NOTE_LIST = "NOTE_LIST";
+    public static final String NOTE_ABOUT = "NOTE_ABOUT";
+    public static final String NOTE_VALUE = "NOTE_VALUE";
     private Repo repository = InMemoryRepoImpl.getInstance();
 
     @Override
@@ -39,34 +47,121 @@ public class MainNotesActivity extends AppCompatActivity {
             fillRepo();
         }
 
+        initToolbarAndDrawer();
+
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = this.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.list_fragment, new NoteListFragment());
+            fragmentTransaction.replace(R.id.list_fragment, new NoteListFragment(), NOTE_LIST);
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.commit();
-            /*getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.list_fragment, new NoteListFragment())
-                    .commit();*/
+        }else {
+            Fragment noteAboutFragment = getSupportFragmentManager().findFragmentByTag(NOTE_ABOUT);
+            if(noteAboutFragment!=null){
+                openAbout();
+            }else{
+                openHome();
+            }
+
         }
-
-
-
-        /*if (getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE) {
-            onNoteClickLand(new Note("",""));
-        }*/
     }
 
+    private void openHome() {
+        Fragment noteValueFragment = getSupportFragmentManager().findFragmentByTag(NOTE_VALUE);
+        Fragment noteListFragment = getSupportFragmentManager().findFragmentByTag(NOTE_LIST);
+        if (noteValueFragment != null) {
+            FragmentManager fm = this.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction;
 
-/*    @Override
-    protected void onResume() {
-        super.onResume();
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
+            if (getResources().getConfiguration().orientation
+                    == Configuration.ORIENTATION_LANDSCAPE) {
+                fm.popBackStack();
+                fm.executePendingTransactions();
+                fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.list_fragment, noteListFragment, NOTE_LIST);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                fragmentTransaction.commit();
+                fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.edit_fragment,
+                        EditNoteFragment.newInstance(noteValueFragment.getArguments()),
+                        NOTE_VALUE);
+                fragmentTransaction.addToBackStack("");
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                fragmentTransaction.commit();
+            } else {
+                fm.popBackStack();
+                fm.executePendingTransactions();
+                fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.list_fragment,
+                        noteListFragment,
+                        NOTE_LIST);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                fragmentTransaction.commit();
+                fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.list_fragment,
+                        EditNoteFragment.newInstance(noteValueFragment.getArguments()),
+                        NOTE_VALUE);
+                fragmentTransaction.addToBackStack("");
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                fragmentTransaction.commit();
+            }
+        }else {
+            FragmentManager fm = this.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction;
+            fm.popBackStack();
+            fm.executePendingTransactions();
+            fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.list_fragment, new NoteListFragment(), NOTE_LIST);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.commit();
         }
-    }*/
+    }
+
+    private void initToolbarAndDrawer() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        initDrawer(toolbar);
+    }
+
+    private void initDrawer(Toolbar toolbar) {
+        // Находим DrawerLayout
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        // Создаем ActionBarDrawerToggle
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar,
+                R.string.nav_app_bar_open_drawer_description,
+                R.string.nav_app_bar_open_drawer_description);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        // Обработка навигационного меню
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            switch (id) {
+                case R.id.action_drawer_home:
+                    openHome();
+                    drawer.close();
+                    return true;
+                case R.id.action_drawer_about:
+                    openAbout();
+                    drawer.close();
+                    return true;
+            }
+            return false;
+        });
+    }
+
+    private void openAbout() {
+        FragmentManager fm = this.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction;
+        fm.popBackStack();
+        fm.executePendingTransactions();
+        fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.list_fragment, AboutNoteFragment.newInstance(), NOTE_ABOUT);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+    }
 
     private void fillRepo() {
         repository.create(new Note("Задача 1", "Описание 1 "));
@@ -128,7 +223,7 @@ public class MainNotesActivity extends AppCompatActivity {
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.list_fragment, detail);
+        fragmentTransaction.replace(R.id.list_fragment, detail, NOTE_VALUE);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
@@ -142,7 +237,7 @@ public class MainNotesActivity extends AppCompatActivity {
         EditNoteFragment detail = EditNoteFragment.newInstance(note);
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.edit_fragment, detail);
+        fragmentTransaction.replace(R.id.edit_fragment, detail, NOTE_VALUE);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
