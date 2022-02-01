@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import ru.gb.note.R;
 import ru.gb.note.data.Constants;
@@ -37,6 +43,8 @@ public class MainNotesActivity extends AppCompatActivity {
     public static final String NOTE_ABOUT = "NOTE_ABOUT";
     public static final String NOTE_VALUE = "NOTE_VALUE";
     private Repo repository = InMemoryRepoImpl.getInstance();
+    private SharedPreferences sharedPref;
+    public static final String KEY = "notes";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +52,16 @@ public class MainNotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notes_list);
 
         if (savedInstanceState == null) {
-            fillRepo();
+            sharedPref = getPreferences(MODE_PRIVATE);
+            String savedNotes = sharedPref.getString(KEY, null);
+
+            if (savedNotes == null || savedNotes.isEmpty()) {
+                fillRepo();
+            } else {
+                Type type = new TypeToken<ArrayList<Note>>() {
+                }.getType();
+                repository.setData(new GsonBuilder().create().fromJson(savedNotes, type));
+            }
         }
 
         initToolbarAndDrawer();
@@ -255,4 +272,8 @@ public class MainNotesActivity extends AppCompatActivity {
     }
 
 
+    public void saveToSharedPreferences() {
+        String jsonNotes = new GsonBuilder().create().toJson(repository.getAll());
+        sharedPref.edit().putString(KEY, jsonNotes).apply();
+    }
 }
