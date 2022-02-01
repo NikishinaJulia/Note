@@ -10,4 +10,6 @@ public interface Repo {
     void delete(int id);
 
     List<Note> getAll();
+
+    void setData(List<Note> notes);
 }

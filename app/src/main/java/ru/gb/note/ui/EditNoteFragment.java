@@ -1,7 +1,6 @@
 package ru.gb.note.ui;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,10 +16,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,7 +27,6 @@ import ru.gb.note.data.Constants;
 import ru.gb.note.data.InMemoryRepoImpl;
 import ru.gb.note.data.Note;
 import ru.gb.note.data.Repo;
-import ru.gb.note.recycler.NotesAdapter;
 
 public class EditNoteFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, DatePickerDialog.OnDateSetListener {
 
@@ -127,6 +123,7 @@ public class EditNoteFragment extends Fragment implements View.OnClickListener, 
         }else{
             requireActivity().getSupportFragmentManager().popBackStack();
         }
+        ((MainNotesActivity) requireActivity()).saveToSharedPreferences();
     }
 
   /*  private String getImportanceValue(View v) {

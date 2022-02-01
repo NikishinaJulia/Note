@@ -65,4 +65,9 @@ public class InMemoryRepoImpl implements Repo{
     public List<Note> getAll() {
         return notes;
     }
+
+    @Override
+    public void setData(List<Note> notes) {
+        this.notes = new ArrayList<>(notes);
+    }
 }
